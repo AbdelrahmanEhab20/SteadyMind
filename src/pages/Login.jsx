@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import Swal from 'sweetalert2';
 
 const Login = ({ setIsLoggedIn }) => {
     const [username, setUsername] = useState('');
@@ -11,30 +12,26 @@ const Login = ({ setIsLoggedIn }) => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log("Login attempt with:", username, password);
-
         // Default credentials for testing
         if ((username === 'testuser' && password === 'password') || username === 'user') {
-            console.log("Valid credentials - proceeding with login");
             sessionStorage.setItem('isLoggedIn', 'true');
             sessionStorage.setItem('username', username);
 
             // Update the state in App component
             setIsLoggedIn('true');
 
-            // Verify session storage was set
-            console.log("Session storage after set:", {
-                isLoggedIn: sessionStorage.getItem('isLoggedIn'),
-                username: sessionStorage.getItem('username')
-            });
-
             // Navigate and verify
-            console.log("Attempting navigation to /dashboard");
             navigate('/dashboard');
-            console.log("Navigation function called");
         } else {
-            console.log("Invalid credentials");
-            alert('Invalid credentials. Try testuser/password or user/any');
+            Swal.fire(
+                {
+                    icon: 'fail',
+                    title: 'Logged IN Failed',
+                    text: 'Invalid credentials',
+                    // timer: 1000,
+                    showConfirmButton: true
+
+                });
         }
     };
 
